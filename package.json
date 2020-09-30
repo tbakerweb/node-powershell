@@ -1,81 +1,64 @@
 {
-  "name": "node-powershell",
-  "version": "4.0.0",
-  "description": "Easily run PowerShell from your NodeJS app",
-  "main": "./lib/index.js",
-  "files": [
-    "lib",
-    "docs",
-    "example",
-    "test"
-  ],
-  "directories": {
-    "lib": "lib",
-    "docs": "docs",
-    "example": "example",
-    "test": "test"
-  },
-  "scripts": {
-    "test": "nyc mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint lib/",
-    "start": "cd ./example && node example.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rannn505/node-powershell.git"
-  },
-  "keywords": [
-    "node-powershell",
-    "ps",
-    "powershell",
-    "node-ps",
-    "microsoft",
-    "shell",
-    "cmd",
-    "commandline",
-    "command",
-    "Line",
-    "windows",
-    "windows powershell",
-    "script",
-    "spwan",
-    "shells",
-    "terminal",
-    "linux powershell",
-    "powershell github",
-    "PowerShell for every system",
-    "PowerShell cross-platform",
-    "powershell linux",
-    "powershell centos",
-    "powershell rhel",
-    "powershell ubuntu",
-    "powershell macos",
-    "powershell docker",
-    "PowerShell Core",
-    "PowerShell Core 6.0",
-    "PowerShell 6.0",
-    "pwsh"
-  ],
+  "name": "nbsh",
+  "private": true,
+  "description": "Node.js bindings for shell",
   "author": "Ran Cohen <rannn505@outlook.com>",
+  "homepage": "http://rannn505.github.io/nbsh/",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rannn505/node-powershell/issues"
+  "scripts": {
+    "bootstrap": "npx lerna bootstrap --hoist --strict",
+    "clean": "lerna exec -- rimraf dist tsconfig.tsbuildinfo coverage",
+    "clean:all": "npm run clean && lerna exec -- rimraf node_modules && rimraf node_modules .eslintcache",
+    "format": "prettier --write '**/*.{js,ts,md}' --ignore-path .gitignore",
+    "format:check": "prettier --check '**/*.{js,ts,md}' --ignore-path .gitignore",
+    "lint": "eslint . --cache --fix --ext js,ts,md --ignore-path .gitignore",
+    "lint:check": "eslint . --cache --ext js,ts,md --ignore-path .gitignore",
+    "pretest": "npm run build",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
+    "test:cov": "npm test -- --coverage",
+    "compile": "lerna exec --ignore examples -- tsc --build",
+    "build": "npm run clean && npm run bootstrap && npm run compile",
+    "build:watch": "npm run build && tsc --build --watch",
+    "types:check": "npm run compile -- --dry",
+    "examples": "npm run build && ts-node examples",
+    "start": "npm run examples",
+    "prepublishOnly": "npm run types:check && npm run format:check && npm run lint:check && npm test"
   },
-  "homepage": "http://rannn505.github.io/node-powershell/",
-  "dependencies": {
-    "chalk": "^2.4.1",
-    "shortid": "^2.2.14"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,md}": "npm run lint"
+  },
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "devEngines": {
+    "node": ">= 8.0.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
-    "coveralls": "^3.0.0",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "mocha": "^4.0.1",
-    "nyc": "^13.1.0",
-    "sinon": "^7.2.3"
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.4",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-markdown": "^1.0.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.5",
+    "jest": "^25.3.0",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.9.7"
   }
 }
